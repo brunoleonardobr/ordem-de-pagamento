@@ -10,7 +10,7 @@
 ### instalação das dependências
 > composer install
 
-### criar o arquivo database.sqlite no diretorio /databases se não existir
+### criar o arquivo database.sqlite no diretorio /database se não existir
 
 ### rodar as migrations no arquivo database.sqlite
 > php artisan migrate
