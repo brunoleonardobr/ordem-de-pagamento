@@ -34,11 +34,13 @@ class ProcessaPagamento implements ShouldQueue
     public function handle()
     {
         $ordem = OrdensDePagamentos::where('id',$this->ordensDePagamentos->id)->first();
-        if($ordem->id % 2 == 0) {
+
+        $idIsEven = $ordem->id % 2 == 0;
+
+        if ($idIsEven) {
             $banco = new BancoDoBrasil();
             $banco->registraPagamento($ordem);
-        }
-        else{
+        } else {
             $banco = new Bradesco();
             $banco->registraPagamento($ordem);
         }
