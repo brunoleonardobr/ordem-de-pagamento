@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\OrdemPagamentoRequest;
 use App\Services\CriarOrdemPagamento;
 use App\Services\ListarPagamentos;
 use App\Services\Validador;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class OrdensPagamentoController extends Controller
 {
@@ -21,15 +19,7 @@ class OrdensPagamentoController extends Controller
             return $validator->errors();
         }
 
-        $ordem = [
-            "invoice"=>$request->invoice,
-            "beneficiario"=>$request->beneficiario,
-            "cod_banco_beneficiario"=>$request->cod_banco_beneficiario,
-            "numero_agencia_beneficiario"=>$request->numero_agencia_beneficiario,
-            "numero_conta_beneficiario"=>$request->numero_conta_beneficiario,
-            "valor_pagamento"=>$request->valor_pagamento,
-        ];
-        $ordemCriada = $criarOrdemPagamento->executar($ordem);
+        $ordemCriada = $criarOrdemPagamento->executar($request->all());
         return $ordemCriada;
     }
 

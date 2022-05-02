@@ -7,7 +7,7 @@ class Banco
     protected $nomeBanco = 'DEFAULT';
 
     public function registraPagamento(OrdensDePagamentos $ordemDePagamento) {
-        $ordemDePagamento->nome_banco = $this->nomeBanco;
+        $ordemDePagamento->banco_processador = $this->nomeBanco;
         $ordemDePagamento->status = 'PROCESSADO';
         $ordemDePagamento->save();
     }
