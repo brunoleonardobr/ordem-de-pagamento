@@ -10,6 +10,8 @@
 ### instalação das dependências
 > composer install
 
+### criar o arquivo database.sqlite no diretorio /database se não existir
+
 ### rodar as migrations no arquivo database.sqlite
 > php artisan migrate
 
@@ -27,7 +29,10 @@
 
 ## Métodos da api
 > (POST) - /pagamentos/criar - cria pagamento de acordo com parâmetros do body
+> 
 > (GET) - /pagamentos - lista pagamentos
+> 
 > (GET) - /pagamentos/{id} - busca pagamento por ID
+> 
 ## Vendo os logs
 na execução do projeto é possível ver todo o processamento rodando no arquivo de logs do laravel 'laravel.log'
