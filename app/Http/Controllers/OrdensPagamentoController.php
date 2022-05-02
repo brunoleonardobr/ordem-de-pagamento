@@ -2,13 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrdemPagamentoRequest;
 use App\Services\CriarOrdemPagamento;
 use App\Services\ListarPagamentos;
+use App\Services\Validador;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class OrdensPagamentoController extends Controller
 {
-    public function criar(Request $request, CriarOrdemPagamento $criarOrdemPagamento){
+    public function criar(Request $request, CriarOrdemPagamento $criarOrdemPagamento) {
+
+        [$rules,$messages] = Validador::rules($request);
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if($validator->fails()){
+            return $validator->errors();
+        }
+
         $ordem = [
             "invoice"=>$request->invoice,
             "beneficiario"=>$request->beneficiario,
