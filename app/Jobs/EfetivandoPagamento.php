@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Banco;
 use App\Models\OrdensDePagamentos;
 use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -33,14 +34,9 @@ class EfetivandoPagamento //implements ShouldQueue
         
         if(sizeOf($ordens) > 0) {
             foreach ($ordens as $key => $ordem) {
-                $randomStatus = random_int( 1 , 2 );
-                if ($randomStatus == 1) {
-                    $ordem->status = 'PAGO';
-                } else {
-                    $ordem->status = 'REJEITADO';
-                }
+                $banco = new Banco();
+                $banco->consultaPagamento($ordem);
                 info("[ID={$ordem->id}]: Finalizando pagamento. STATUS='{$ordem->status}'");
-                $ordem->save();
             }
         }
     }

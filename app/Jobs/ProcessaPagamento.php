@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\BancoDoBrasil;
+use App\Models\Bradesco;
 use App\Models\OrdensDePagamentos;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -32,17 +33,14 @@ class ProcessaPagamento implements ShouldQueue
      */
     public function handle()
     {
-        $bancoProcessador = '';
-
         $ordem = OrdensDePagamentos::where('id',$this->ordensDePagamentos->id)->first();
-        if($ordem->id % 2 == 0)
-            $bancoProcessador = 'BANCO DO BRASIL';
-        else
-            $bancoProcessador = 'BRADESCO';
-        
-        $ordem->banco_processador = $bancoProcessador;
-
-        $ordem->status = 'PROCESSADO';
-        $ordem->save();
+        if($ordem->id % 2 == 0) {
+            $banco = new BancoDoBrasil();
+            $banco->registraPagamento($ordem);
+        }
+        else{
+            $banco = new Bradesco();
+            $banco->registraPagamento($ordem);
+        }
     }
 }
