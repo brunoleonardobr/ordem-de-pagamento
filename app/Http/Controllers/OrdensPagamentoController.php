@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CriarOrdemPagamento;
+use App\Services\ListarPagamentos;
 use Illuminate\Http\Request;
 
 class OrdensPagamentoController extends Controller
@@ -18,5 +19,13 @@ class OrdensPagamentoController extends Controller
         ];
         $ordemCriada = $criarOrdemPagamento->executar($ordem);
         return $ordemCriada;
+    }
+
+    public function buscar(int $id) {
+        return ListarPagamentos::porId($id);
+    }
+
+    public function listar() {
+        return ListarPagamentos::todos();
     }
 }
