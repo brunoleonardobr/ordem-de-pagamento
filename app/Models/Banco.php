@@ -4,19 +4,11 @@ namespace App\Models;
 
 class Banco
 {
-    public static function registraPagamento(OrdensDePagamentos $ordemDePagamento){
+    protected $nomeBanco = 'DEFAULT';
 
-        $bancoProcessador = '';
+    public function registraPagamento(OrdensDePagamentos $ordemDePagamento) {
+        $ordemDePagamento->nome_banco = $this->nomeBanco;
 
-        if($ordemDePagamento->id % 2 == 0)
-            $bancoProcessador = 'BANCO DO BRASIL';
-        else
-            $bancoProcessador = 'BRADESCO';
-        
-        $ordemDePagamento->banco_processador = $bancoProcessador;
-        $ordemDePagamento->push();
-        
-        return $ordemDePagamento;
     }
 
     public function consultaPagamento(int $id){

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\BancoDoBrasil;
 use App\Models\OrdensDePagamentos;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,15 +14,15 @@ class ProcessaPagamento implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $ordemDePagamento;
+    protected $ordensDePagamentos;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($ordemDePagamento)
+    public function __construct($ordensDePagamentos)
     {
-        $this->ordemDePagamento = $ordemDePagamento;
+        $this->ordensDePagamentos = $ordensDePagamentos;
     }
 
     /**
@@ -31,12 +32,17 @@ class ProcessaPagamento implements ShouldQueue
      */
     public function handle()
     {
-        log('Executando registro da fila');
-        $ordem = OrdensDePagamentos::find($this->ordemDePagamento->id);
-        $ordem->status = 'PROCESSANDO';
+        $bancoProcessador = '';
 
-        info('Processando pagamento '.$this->ordemDePagamento->id.' da fila. STATUS="PROCESSADO"');
+        $ordem = OrdensDePagamentos::where('id',$this->ordensDePagamentos->id)->first();
+        if($ordem->id % 2 == 0)
+            $bancoProcessador = 'BANCO DO BRASIL';
+        else
+            $bancoProcessador = 'BRADESCO';
+        
+        $ordem->banco_processador = $bancoProcessador;
 
+        $ordem->status = 'PROCESSADO';
         $ordem->save();
     }
 }
